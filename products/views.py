@@ -49,19 +49,15 @@ class ReviewListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user, product_id=self.kwargs['product_id'])
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all().order_by('-created_at')
+    queryset = Product.objects.all().order_by('created_date')
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    # ✅ Enable filtering, search, and ordering
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
-    # ✅ Fields that can be filtered
     filterset_fields = ['category', 'user']
 
-    # ✅ Fields that can be searched
     search_fields = ['name', 'description']
 
-    # ✅ Default ordering
-    ordering_fields = ['price', 'created_at']
-    ordering = ['-created_at']
+    ordering_fields = ['price', 'created_date']
+    ordering = ['created_date']
